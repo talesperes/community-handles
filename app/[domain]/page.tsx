@@ -119,7 +119,7 @@ export default async function IndexPage({
         </p>
       </div>
       <div>
-        <Stage title="Enter your current handle" number={1}>
+        <Stage title="Diga-nos seu usuário atual" number={1}>
           <form>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <div className="flex w-full max-w-sm items-center space-x-2">
@@ -155,7 +155,11 @@ export default async function IndexPage({
             </div>
           </form>
         </Stage>
-        <Stage title="Choose your new handle" number={2} disabled={!profile}>
+        <Stage
+          title="Escolha um novo usuário com user.pm"
+          number={2}
+          disabled={!profile}
+        >
           <form>
             <input type="hidden" name="handle" value={handle} />
             <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -169,8 +173,7 @@ export default async function IndexPage({
                 <Button type="submit">Confirmar</Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Digite o novo usuário desejado utilizando {domain}, sem incluir
-                o @
+                Digite o novo usuário utilizando {domain}, sem incluir o @
               </p>
               {error2 && (
                 <p className="text-sm text-red-500">
