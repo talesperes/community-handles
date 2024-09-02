@@ -13,7 +13,7 @@ export function generateMetadata({ params }: { params: { domain: string } }) {
   const domain = params.domain
   return {
     title: `${domain}`,
-    description: `Use o ${domain}`,
+    description: `Destaque-se utilizando ${domain}`,
   }
 }
 
