@@ -45,7 +45,6 @@ export default async function CommunityPage({ params }: Props) {
           <Link href="/" className="underline">
             clicando aqui
           </Link>
-          .
         </p>
 
         <LoadMore
