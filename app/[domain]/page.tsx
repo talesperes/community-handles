@@ -12,8 +12,8 @@ import { Stage } from "@/components/stage"
 export function generateMetadata({ params }: { params: { domain: string } }) {
   const domain = params.domain
   return {
-    title: `${domain} - get your community handle for Bluesky`,
-    description: `get your own ${domain} handle`,
+    title: `${domain}`,
+    description: `Use o ${domain}`,
   }
 }
 
@@ -110,11 +110,11 @@ export default async function IndexPage({
     <main className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="flex max-w-[980px] flex-col items-start gap-4">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-          Get your own {domain} <br className="hidden sm:inline" />
-          handle for Bluesky
+          Use {domain} <br className="hidden sm:inline" />e destaque-se no
+          Bluesky
         </h1>
         <p className="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
-          Follow the instructions below to get your own {domain} handle
+          Siga as instruções abaixo para mudar seu @ utilizando {domain}
         </p>
       </div>
       <div>
@@ -132,20 +132,21 @@ export default async function IndexPage({
                   defaultValue={handle}
                   required
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Buscar</Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Enter your current handle, not including the @
+                Digite seu usuário atual, sem incluir o @
               </p>
               {error1 && (
                 <p className="flex flex-row items-center gap-2 text-sm text-red-500">
-                  <X className="size-4" /> Handle not found - please try again
+                  <X className="size-4" /> Não encontrado, tente novamente.
                 </p>
               )}
               {profile && (
                 <>
                   <p className="text-muted-forground mt-4 flex flex-row items-center gap-2 text-sm">
-                    <Check className="size-4 text-green-500" /> Account found
+                    <Check className="size-4 text-green-500" /> Conta encontrada
+                    com sucesso!
                   </p>
                   <Profile profile={profile} className="mt-4" />
                 </>
@@ -164,25 +165,25 @@ export default async function IndexPage({
                   placeholder={`example.${domain}`}
                   defaultValue={newHandle}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Confirmar</Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Enter the {domain} handle that you would like to have, not
-                including the @
+                Digite o novo usuário desejado utilizando {domain}, sem incluir
+                o @
               </p>
               {error2 && (
                 <p className="text-sm text-red-500">
                   {(() => {
                     switch (error2) {
                       case "handle taken":
-                        return "Handle already taken - please enter a different handle"
+                        return "Usuário já usado, insira um diferente."
                       case "invalid handle":
                       case "slur":
-                        return "Invalid handle - please enter a different handle"
+                        return "Usuário inválido, insira um diferente."
                       case "reserved":
-                        return "Reserved handle - please enter a different handle"
+                        return "Usuário reservado, insira um diferente."
                       default:
-                        return "An error occured - please try again"
+                        return "Ocorreu um erro, por favor tente novamente."
                     }
                   })()}
                 </p>
@@ -191,21 +192,21 @@ export default async function IndexPage({
           </form>
         </Stage>
         <Stage
-          title="Change your handle within the Bluesky app"
+          title="Após realizar as etapas acima, configure seu Bluesky"
           number={3}
           disabled={!newHandle || !!error2}
           last
         >
           <p className="max-w-lg text-sm">
-            Go to Settings {">"} Advanced {">"} Change my handle. Select &quot;I
-            have my own domain&quot; and enter{" "}
-            {newHandle ? `"${newHandle}"` : "your new handle"}. Finally, tap
-            &quot;Verify DNS Record&quot;.
+            Vá em configurações {">"} Alterar usuário. Selecione &quot;Eu tenho
+            meu próprio domínio&quot; e coloque{" "}
+            {newHandle ? `"${newHandle}"` : "seu novo usuário escolhido acima"}.
+            Por fim, aperte em &quot;Verificar registro DNS&quot;.
           </p>
           <p className="mt-6 max-w-lg text-sm">
-            If you like this project, consider{" "}
+            Créditos:{" "}
             <a href="https://github.com/sponsors/mozzius" className="underline">
-              sponsoring my work
+              mozzius
             </a>
             .
           </p>
