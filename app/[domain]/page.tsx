@@ -3,19 +3,11 @@ import { Check, X } from "lucide-react"
 
 import { agent } from "@/lib/atproto"
 import { prisma } from "@/lib/db"
-// import { hasExplicitSlur } from "@/lib/slurs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { DonationModal } from "@/components/donation-modal"
 import { Profile } from "@/components/profile"
 import { Stage } from "@/components/stage"
-
-export function generateMetadata({ params }: { params: { domain: string } }) {
-  const domain = params.domain
-  return {
-    title: `${domain} - obtenha seu usuário de comunidade para Bluesky`,
-    description: `obtenha seu próprio usuário ${domain}`,
-  }
-}
 
 export default async function IndexPage({
   params,
@@ -35,6 +27,8 @@ export default async function IndexPage({
   let profile: AppBskyActorDefs.ProfileView | undefined
   let error1: string | undefined
   let error2: string | undefined
+
+  let showDonationModal = false
 
   if (handle) {
     try {
@@ -58,17 +52,12 @@ export default async function IndexPage({
         newHandle += "." + domain
       }
       if (!error1) {
-        // regex: (alphanumeric, -, _).(domain)
         const validHandle = newHandle.match(
           new RegExp(`^[a-zA-Z0-9-_]+.${domain}$`)
         )
         if (validHandle) {
           try {
             const handle = newHandle.replace(`.${domain}`, "")
-            // some users without intentional insults were blocked from creating a user
-            // if (hasExplicitSlur(handle)) {
-            //   throw new Error("slur")
-            // }
 
             if (domain === "army.social" && RESERVED.includes(handle)) {
               throw new Error("reserved")
@@ -78,10 +67,12 @@ export default async function IndexPage({
               where: { handle },
               include: { domain: true },
             })
+
             if (existing && existing.domain.name === domain) {
               if (existing.did !== profile.did) {
                 error2 = "handle taken"
               }
+              showDonationModal = true
             } else {
               await prisma.user.create({
                 data: {
@@ -95,6 +86,7 @@ export default async function IndexPage({
                   },
                 },
               })
+              showDonationModal = true
             }
           } catch (e) {
             console.error(e)
@@ -119,6 +111,10 @@ export default async function IndexPage({
           Siga as instruções abaixo para obter seu próprio usuário {domain}
         </p>
       </div>
+
+      {/* Renderiza o modal se showDonationModal for true */}
+      {showDonationModal && <DonationModal />}
+
       <div>
         <Stage title="Insira seu usuário atual" number={1}>
           <form>
@@ -156,6 +152,7 @@ export default async function IndexPage({
             </div>
           </form>
         </Stage>
+
         <Stage title="Escolha seu novo usuário" number={2} disabled={!profile}>
           <form>
             <input type="hidden" name="handle" value={handle} />
@@ -206,7 +203,7 @@ export default async function IndexPage({
             &quot;Verificar registro DNS&quot;.
           </p>
           <p className="mt-6 max-w-lg text-sm">
-            Se você gostou deste projeto, considere me {" "}
+            Se você gostou deste projeto, considere me{" "}
             <a href="https://livepix.gg/5eiat" className="underline">
               apoiar
             </a>
@@ -214,7 +211,10 @@ export default async function IndexPage({
           </p>
           <p className="mt-1 max-w-lg text-xs">
             Tradução e host por{" "}
-            <a href="https://bsky.app/profile/nayeon.twice.social" className="underline">
+            <a
+              href="https://bsky.app/profile/nayeon.twice.social"
+              className="underline"
+            >
               @nayeon.twice.social
             </a>
             .
