@@ -9,6 +9,14 @@ import { DonationModal } from "@/components/donation-modal"
 import { Profile } from "@/components/profile"
 import { Stage } from "@/components/stage"
 
+export function generateMetadata({ params }: { params: { domain: string } }) {
+  const domain = params.domain
+  return {
+    title: `${domain} - obtenha seu usuário de comunidade para Bluesky`,
+    description: `obtenha seu próprio usuário ${domain}`,
+  }
+}
+
 export default async function IndexPage({
   params,
   searchParams,
@@ -59,7 +67,7 @@ export default async function IndexPage({
           try {
             const handle = newHandle.replace(`.${domain}`, "")
 
-            if (domain === "army.social" && RESERVED.includes(handle)) {
+            if (RESERVED.includes(handle)) {
               throw new Error("reserved")
             }
 
