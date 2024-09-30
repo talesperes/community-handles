@@ -80,7 +80,7 @@ export default async function IndexPage({
               if (existing.did !== profile.did) {
                 error2 = "handle taken"
               }
-              showDonationModal = true
+              showDonationModal = false
             } else {
               await prisma.user.create({
                 data: {
@@ -94,7 +94,7 @@ export default async function IndexPage({
                   },
                 },
               })
-              showDonationModal = true
+              showDonationModal = false
             }
           } catch (e) {
             console.error(e)
